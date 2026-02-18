@@ -1,0 +1,272 @@
+/* Kelola Server Styles */
+
+.kelola-server-container {
+  width: 100%;
+}
+
+/* Header Section */
+.kelola-header {
+  background: #F2F2F2 5%;
+  opacity: 10;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border-radius: 16px;
+  text-align: center;
+}
+
+.kelola-header h1 {
+  margin: 0;
+  font-size: 3.1rem;
+  color: #2d7d4f;
+  font-weight: 600;
+}
+
+/* Content Area */
+.kelola-content {
+  padding: 0 1rem;
+}
+
+/* Note Section */
+.kelola-note {
+  background-color: #fff3cd;
+  border-left: 4px solid #8d7f55;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 4px;
+}
+
+.kelola-note p {
+  margin: 0;
+  color: #8b6914;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* Search and Actions */
+.search-actions {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.search-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #4caf50;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+}
+
+.daftar-btn {
+  padding: 0.75rem 1.5rem;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.daftar-btn:hover {
+  background-color: #45a049;
+  transform: translateY(-2px);
+}
+
+.daftar-btn:active {
+  transform: translateY(0);
+}
+
+/* Table Wrapper */
+.table-wrapper {
+  background-color: white;
+  border: 2px solid #D0D0D0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.table-header {
+  padding: 1rem 1.5rem;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.table-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #333;
+  font-weight: 600;
+}
+
+/* Server Table */
+.server-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+}
+
+.server-table thead {
+  background-color: #f9f9f9;
+}
+
+.server-table th {
+  padding: 1rem 1.5rem;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 2px solid #e0e0e0;
+  font-size: 0.95rem;
+}
+
+.server-table td {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #f0f0f0;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.server-table tbody tr:hover {
+  background-color: #f9f9f9;
+  transition: background-color 0.2s ease;
+}
+
+.server-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Action Cell */
+.aksi-cell {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.action-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.edit-btn {
+  background-color: #ffc107;
+  color: #333;
+}
+
+.edit-btn:hover {
+  background-color: #ffb300;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(255, 193, 7, 0.3);
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+}
+
+.action-btn:active {
+  transform: translateY(0);
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+  min-height: 300px;
+}
+
+.empty-state-content {
+  text-align: center;
+}
+
+.empty-state-content h3 {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.5rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.empty-icon {
+  width: 120px;
+  height: 120px;
+  margin: 1rem 0;
+  opacity: 0.7;
+}
+
+.empty-state-content p {
+  margin: 1rem 0 0 0;
+  font-size: 1rem;
+  color: #666;
+  font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .search-actions {
+    flex-direction: column;
+  }
+
+  .search-input {
+    width: 100%;
+  }
+
+  .daftar-btn {
+    width: 100%;
+  }
+
+  .server-table th,
+  .server-table td {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .aksi-cell {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .action-btn {
+    width: 100%;
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .kelola-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .server-table {
+    font-size: 0.85rem;
+  }
+
+  .server-table th,
+  .server-table td {
+    padding: 0.5rem;
+  }
+
+  .empty-icon {
+    width: 80px;
+    height: 80px;
+  }
+}

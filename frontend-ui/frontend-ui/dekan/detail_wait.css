@@ -1,0 +1,128 @@
+/* Dekan Detail Wait Styles */
+.detail-wait-container {
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.detail-wait-status {
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  border-left: 4px solid;
+}
+
+.detail-wait-status.waiting {
+  background-color: #FFF3E0;
+  border-color: #FFB74D;
+  color: #E65100;
+}
+
+.detail-wait-section {
+  margin-bottom: 24px;
+}
+
+.detail-wait-section h4 {
+  margin-top: 20px;
+  margin-bottom: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.detail-wait-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.detail-wait-field {
+  margin-bottom: 12px;
+}
+
+.detail-wait-field strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #333;
+  font-weight: 600;
+}
+
+.detail-wait-field p {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.detail-wait-textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.detail-wait-textarea:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.detail-wait-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.detail-wait-actions button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.detail-wait-actions button:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.detail-wait-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.detail-wait-actions button.reject {
+  background-color: #F44336;
+  color: white;
+}
+
+.detail-wait-actions button.approve {
+  background-color: #4CAF50;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .detail-wait-container {
+    padding: 16px;
+  }
+
+  .detail-wait-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-wait-actions {
+    flex-direction: column;
+  }
+
+  .detail-wait-actions button {
+    width: 100%;
+  }
+}

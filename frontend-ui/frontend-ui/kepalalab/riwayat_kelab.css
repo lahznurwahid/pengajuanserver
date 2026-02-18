@@ -1,0 +1,630 @@
+.riwayat-container {
+  padding: 40px 20px;
+  background-color: #eaf6ee;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Kotak Title Atas */
+.header-title-box {
+  background: #f8fcf8;
+  border: 1px solid #e0e0e0;
+  border-radius: 15px;
+  padding: 15px 60px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  margin-bottom: 30px;
+}
+
+.header-title-box h1 {
+  color: #2d7a32;
+  margin: 0;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+/* Card Utama */
+.main-card {
+  background: white;
+  width: 100%;
+  max-width: 1100px;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+/* Note Box */
+.note-box {
+  background: #ffffff;
+  
+  
+  border-radius: 8px;
+  margin-bottom: 15px;
+  font-size: 13px;
+  line-height: 1.3;
+  color: #333;
+}
+
+/* Search & Filter Bar */
+.search-filter-section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.search-input-wrapper {
+  display: flex;
+  gap: 10px;
+}
+
+.search-input-wrapper input {
+  flex: 1;
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #f9f9f9;
+}
+
+.btn-search {
+  background: #5cb85c;
+  color: white;
+  border: none;
+  padding: 0 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.filter-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.select-custom {
+  padding: 8px 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: #f1f1f1;
+  min-width: 120px;
+}
+
+.btn-reset {
+  background: white;
+  border: 1px solid #ccc;
+  padding: 8px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-terapkan {
+  background: #5cb85c;
+  color: white;
+  border: none;
+  padding: 8px 25px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Table Styling */
+.table-container {
+  border: 1px solid #eee;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.custom-table th {
+  background: #f8f8f8;
+  padding: 12px;
+  text-align: left;
+  font-size: 14px;
+  color: #666;
+  border-bottom: 2px solid #eee;
+}
+
+.custom-table td {
+  padding: 15px 12px;
+  font-size: 14px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.status-text {
+  font-weight: 500;
+}
+
+.status-text.menunggu { color: #888; }
+.status-text.diproses { color: #333; }
+.status-text.ditolak { color: #d9534f; }
+
+.btn-detail-action {
+  background: #7cc57c;
+  color: white;
+  border: none;
+  padding: 6px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-detail-action:hover {
+  background: #5cb85c;
+}
+
+/* Empty State */
+.no-data-found {
+  text-align: center;
+  padding: 50px;
+  color: #999;
+}
+
+.icon-no-data {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.x-mark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #d9534f;
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* ...existing code... */
+
+/* ============ DETAIL PENGAJUAN PAGE ============ */
+.detail-pengajuan-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+.detail-pengajuan-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  background-color: white;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.btn-back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.btn-back:hover {
+  background-color: #e0e0e0;
+}
+
+.detail-pengajuan-header h1 {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.detail-pengajuan-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.detail-pengajuan-section {
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #eee;
+}
+
+.detail-pengajuan-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.detail-pengajuan-section h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 16px 0;
+}
+
+.detail-pengajuan-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.detail-pengajuan-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-pengajuan-field.full-width {
+  grid-column: 1 / -1;
+}
+
+.detail-pengajuan-field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.detail-pengajuan-field p {
+  font-size: 14px;
+  color: #333;
+  margin: 0;
+  padding: 8px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  border-left: 3px solid #007bff;
+}
+
+/* Approval Timeline */
+.approval-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.approval-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+  border-left: 4px solid #ddd;
+}
+
+.approval-item.disetujui {
+  border-left-color: #28a745;
+  background-color: #f0fdf4;
+}
+
+.approval-item.ditolak {
+  border-left-color: #dc3545;
+  background-color: #fef2f2;
+}
+
+.approval-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: white;
+  color: #999;
+}
+
+.approval-status.disetujui {
+  background-color: #d4edda;
+  color: #28a745;
+}
+
+.approval-status.ditolak {
+  background-color: #f8d7da;
+  color: #dc3545;
+}
+
+.approval-content {
+  flex: 1;
+}
+
+.approval-header {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.approval-header strong {
+  color: #333;
+  font-size: 14px;
+}
+
+.approval-role {
+  color: #999;
+  font-size: 12px;
+}
+
+.approval-status-text {
+  font-size: 13px;
+  color: #666;
+  margin: 4px 0;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 11px;
+}
+
+.status-badge.disetujui {
+  background-color: #d4edda;
+  color: #28a745;
+}
+
+.status-badge.ditolak {
+  background-color: #f8d7da;
+  color: #dc3545;
+}
+
+.approval-note {
+  font-size: 13px;
+  color: #666;
+  margin: 8px 0;
+  padding: 8px;
+  background-color: white;
+  border-radius: 4px;
+  border-left: 2px solid #ffc107;
+}
+
+.approval-date {
+  font-size: 12px;
+  color: #999;
+  margin-top: 4px;
+}
+
+.no-approval {
+  text-align: center;
+  color: #999;
+  font-size: 14px;
+  padding: 20px;
+  margin: 0;
+}
+
+/* Action Section */
+.action-section {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-approve,
+.btn-reject,
+.btn-view {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-approve {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-approve:hover {
+  background-color: #218838;
+}
+
+.btn-reject {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-reject:hover {
+  background-color: #c82333;
+}
+
+.btn-view {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-view:hover {
+  background-color: #0056b3;
+}
+
+/* Action Form */
+.action-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.action-form label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+}
+
+.textarea-catatan {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 14px;
+  resize: none;
+  transition: border-color 0.3s ease;
+}
+
+.textarea-catatan:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.action-confirm-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.btn-cancel,
+.btn-confirm-approve,
+.btn-confirm-reject,
+.btn-confirm-view {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-cancel {
+  background-color: #f0f0f0;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.btn-cancel:hover:not(:disabled) {
+  background-color: #e0e0e0;
+}
+
+.btn-confirm-approve {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-confirm-approve:hover:not(:disabled) {
+  background-color: #218838;
+}
+
+.btn-confirm-reject {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-confirm-reject:hover:not(:disabled) {
+  background-color: #c82333;
+}
+
+.btn-confirm-view {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-confirm-view:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.btn-cancel:disabled,
+.btn-confirm-approve:disabled,
+.btn-confirm-reject:disabled,
+.btn-confirm-view:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Status Message */
+.status-message {
+  padding: 16px;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.status-message.disetujui {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.status-message.ditolak {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* Alert */
+.alert {
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.alert-error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* Loading & Error States */
+.loading-state,
+.error-state {
+  text-align: center;
+  padding: 40px;
+  font-size: 16px;
+  color: #666;
+  background-color: white;
+  border-radius: 8px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .detail-pengajuan-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .btn-approve,
+  .btn-reject,
+  .btn-view {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .action-confirm-buttons {
+    flex-direction: column;
+  }
+
+  .btn-cancel,
+  .btn-confirm-approve,
+  .btn-confirm-reject,
+  .btn-confirm-view {
+    width: 100%;
+  }
+}

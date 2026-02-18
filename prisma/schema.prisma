@@ -1,0 +1,197 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL") 
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  nama         String
+  email        String   @unique
+  password     String
+  noTelepon    String?
+  role         Role
+  createdAt    DateTime @default(now())
+
+  pengajuan    PengajuanServer[] @relation("Pemohon")
+  persetujuan  Persetujuan[]
+  konfirmasi   KonfirmasiLayanan[]
+  auditLogs    AuditLog[]
+}
+
+enum Role {
+  PEMOHON
+  STAF
+  KEPALA_LAB
+  WADEK
+  DEKAN
+  ADMIN_SERVER
+}
+
+model PengajuanServer {
+  id                Int      @id @default(autoincrement())
+  
+  // ========== FIELD BARU - Informasi Pemohon ==========
+  nama              String?   // Nama pemohon
+  jabatan           String?   // Jabatan pemohon
+  email             String?   // Email pemohon
+  nomorTelepon      String?   // Nomor telepon pemohon
+  // ====================================================
+  
+  // Field yang sudah ada
+  namaSistem        String
+  pemilikSistem     String
+  penggunaSistem    String
+  fungsiSistem      String
+  aksesPublik       Boolean
+  namaAlamatLayanan String?
+  
+  // ========== FIELD BARU - Kebutuhan Teknis ==========
+  port              Int?      // Port aplikasi
+  userSSH           String?   // Username SSH
+  passwordSSH       String?   // Password SSH
+  jenisDatabase     JenisDatabase? // Enum jenis database
+  userDatabase      String?   // Username database
+  passwordDatabase  String?   // Password database
+  // ====================================================
+  
+  kebutuhanCPU      Int
+  kebutuhanRAM      Int
+  
+  // ========== FIELD BARU - Kebutuhan Teknis ==========
+  kebutuhanGPU      String?   // Spesifikasi GPU
+  // ====================================================
+  
+  kebutuhanStorage  Int
+  sistemOperasi     String
+  softwareTambahan  String?
+  status            StatusPengajuan
+  tanggalPengajuan  DateTime @default(now())
+
+  pemohonId Int
+  pemohon   User @relation("Pemohon", fields: [pemohonId], references: [id])
+
+  persetujuan    Persetujuan[]
+  tindakLanjut   TindakLanjutServer?
+  penerimaan     PenerimaanServer?
+  arsip          ArsipLayanan?
+  backup         BackupLayanan?
+  konfirmasi     KonfirmasiLayanan?
+  monitoring     MonitoringLayanan?
+
+  auditLogs      AuditLog[]
+}
+enum JenisDatabase {
+  MySQL
+  PostgreSQL
+  Oracle
+  MicrosoftSQLServer
+}
+
+enum StatusPengajuan {
+  DIAJUKAN
+  DIPERIKSA
+  DISETUJUI
+  DITANGGUHKAN
+  DITOLAK
+  DIPROSES
+  DISELESAIKAN
+  DITERIMA
+}
+
+model Persetujuan {
+  id            Int      @id @default(autoincrement())
+  status        String
+  catatan       String?
+  tanggal       DateTime @default(now())
+
+  pengajuanId Int
+  pengajuan   PengajuanServer @relation(fields: [pengajuanId], references: [id])
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+}
+
+model TindakLanjutServer {
+  id            Int      @id @default(autoincrement())
+  deskripsi     String
+  tanggalMulai  DateTime
+  tanggalSelesai DateTime?
+
+  pengajuanId Int @unique
+  pengajuan   PengajuanServer @relation(fields: [pengajuanId], references: [id])
+}
+
+model KonfirmasiLayanan {
+  id          Int      @id @default(autoincrement())
+  status      String
+  catatan     String?
+  confirmedAt DateTime @default(now())
+
+  pengajuanId Int @unique
+  pengajuan   PengajuanServer @relation(fields: [pengajuanId], references: [id])
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+}
+
+model MonitoringLayanan {
+  id               Int      @id @default(autoincrement())
+  ipAddress        String?
+  host             String?
+  statusMonitoring String?
+  uptime           String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  pengajuanId Int @unique
+  pengajuan   PengajuanServer @relation(fields: [pengajuanId], references: [id])
+}
+
+model PenerimaanServer {
+  id               Int      @id @default(autoincrement())
+  cpu              Int
+  ram              Int
+  storage          Int
+  sistemOperasi    String
+  softwareTambahan String?
+  tanggalDiterima  DateTime @default(now())
+
+  pengajuanId Int @unique
+  pengajuan   PengajuanServer @relation(fields: [pengajuanId], references: [id])
+}
+
+model ArsipLayanan {
+  id          Int      @id @default(autoincrement())
+  catatan     String?
+  tanggalArsip DateTime @default(now())
+
+  pengajuanId Int @unique
+  pengajuan   PengajuanServer @relation(fields: [pengajuanId], references: [id])
+}
+
+model BackupLayanan {
+  id               Int      @id @default(autoincrement())
+  periodeBackup    String
+  tanggalTerakhir  DateTime?
+
+  pengajuanId Int @unique
+  pengajuan   PengajuanServer @relation(fields: [pengajuanId], references: [id])
+}
+
+model AuditLog {
+  id         Int      @id @default(autoincrement())
+  action     String
+  detail     String?
+  createdAt  DateTime @default(now())
+
+  pengajuanId Int
+  pengajuan   PengajuanServer @relation(fields: [pengajuanId], references: [id])
+
+  userId Int?
+  user   User? @relation(fields: [userId], references: [id])
+}
+

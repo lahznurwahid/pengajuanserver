@@ -1,0 +1,135 @@
+/* Dekan Detail Setuju Styles */
+.detail-setuju-container {
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.detail-setuju-status {
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  border-left: 4px solid;
+  background-color: #E8F5E9;
+  border-color: #4CAF50;
+  color: #2E7D32;
+}
+
+.detail-setuju-status p {
+  margin: 0;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.detail-setuju-status p:last-child {
+  margin-top: 8px;
+  font-weight: normal;
+  font-size: 12px;
+}
+
+.detail-setuju-section {
+  margin-bottom: 24px;
+}
+
+.detail-setuju-section h4 {
+  margin-top: 20px;
+  margin-bottom: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.detail-setuju-section hr {
+  border: none;
+  border-top: 1px solid #eee;
+  margin: 20px 0;
+}
+
+.detail-setuju-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.detail-setuju-field {
+  margin-bottom: 0;
+}
+
+.detail-setuju-field strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #333;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.detail-setuju-field p {
+  margin: 4px 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.detail-setuju-approval-info {
+  background-color: #f5f5f5;
+  padding: 16px;
+  border-radius: 4px;
+  margin-top: 16px;
+}
+
+.detail-setuju-approval-info strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+  font-weight: 600;
+}
+
+.detail-setuju-approval-info p {
+  margin: 8px 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.detail-setuju-catatan {
+  background-color: #f5f5f5;
+  padding: 12px;
+  border-radius: 4px;
+  margin-top: 8px;
+  min-height: 60px;
+  color: #666;
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.detail-setuju-info-box {
+  background-color: #E3F2FD;
+  border: 1px solid #2196F3;
+  border-radius: 4px;
+  padding: 12px;
+  margin-top: 20px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.detail-setuju-info-box p {
+  margin: 0;
+  color: #1565C0;
+}
+
+.detail-setuju-info-box strong {
+  display: inline;
+  color: #1565C0;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .detail-setuju-container {
+    padding: 16px;
+  }
+
+  .detail-setuju-grid {
+    grid-template-columns: 1fr;
+  }
+}

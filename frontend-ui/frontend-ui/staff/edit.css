@@ -1,0 +1,125 @@
+/* Basic layout to match Figma-style UI (card left, large illustration right) */
+.add-user-page {
+  min-height: calc(100vh - 80px);
+  background: #eaf6ef; /* soft green background similar to figma */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+
+.add-user-wrapper {
+  width: 1100px;
+  display: flex;
+  gap: 40px;
+  align-items: center;
+}
+
+.card-left {
+  width: 420px;
+}
+
+.back-btn {
+  background: transparent;
+  border: none;
+  color: #2b7a5b;
+  font-size: 24px;
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 28px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+}
+
+.card-title {
+  text-align: center;
+  margin: 0 0 20px 0;
+  font-weight: 700;
+}
+
+.form label {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 13px;
+  color: #444;
+}
+
+.form label span {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.form input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 18px;
+  border: 1px solid #e0e0e0;
+  background: #f7f7f7;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.form input:focus {
+  border-color: #b4e4c6;
+  background: #fff;
+}
+
+.form-actions {
+  text-align: center;
+  margin-top: 18px;
+}
+
+.btn-submit {
+  background: #ffcc00; /* yellow button like figma */
+  border: none;
+  color: #222;
+  padding: 8px 24px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.card-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.illustration-placeholder {
+  width: 560px;
+  height: 420px;
+  border-radius: 12px;
+  border: 2px dashed rgba(0,0,0,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #7aa78a;
+  font-weight: 600;
+}
+
+.alert {
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+.alert.error {
+  background: #fdecea;
+  color: #9f3a38;
+}
+
+.alert.success {
+  background: #e6fbef;
+  color: #1f7a46;
+}

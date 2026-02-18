@@ -1,0 +1,252 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+/* Reset & Base */
+* {
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+.riwayat-page {
+  background-color: #E8F5E9; /* Background Mint */
+  min-height: 100vh;
+  padding-bottom: 40px;
+}
+
+/* Navbar */
+.navbar {
+  background: white;
+  padding: 15px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #ddd;
+  margin-bottom: 20px;
+}
+
+.nav-brand {
+  font-weight: bold;
+  color: #2E7D32;
+  font-size: 1.2rem;
+  border-bottom: 2px solid #2E7D32;
+}
+
+.nav-menu a {
+  margin: 0 15px;
+  text-decoration: none;
+  color: #666;
+  font-weight: 600;
+}
+
+.nav-menu a.active {
+  color: #2E7D32;
+}
+
+.btn-logout {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 600;
+}
+
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Header Title */
+.header-title-box {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.header-title-box h1 {
+  display: inline-block;
+  background: white;
+  padding: 15px 40px;
+  border-radius: 12px;
+  color: #2E7D32;
+  font-size: 1.8rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Card Utama */
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  min-height: 500px;
+}
+
+/* Info Box / Note */
+.info-box {
+  background-color: #FFF3E0; /* Light Orange/Pinkish */
+  padding: 15px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: #555;
+  margin-bottom: 25px;
+  line-height: 1.5;
+}
+
+/* Search Bar */
+.search-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.search-input-wrapper {
+  flex: 1;
+  position: relative;
+}
+
+.search-input-wrapper input {
+  width: 100%;
+  padding: 12px 15px 12px 45px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  font-size: 0.95rem;
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+}
+
+.btn-daftar {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 0 25px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Filter Controls */
+.filter-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+  align-items: center;
+}
+
+.dropdown {
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #eee;
+  font-size: 0.9rem;
+  cursor: pointer;
+  min-width: 120px;
+}
+
+.btn-reset {
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #555;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.btn-terapkan {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-terapkan:hover, .btn-daftar:hover {
+  background-color: #43A047;
+}
+
+/* Table */
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.custom-table th {
+  text-align: left;
+  background-color: #f5f5f5;
+  padding: 15px;
+  color: #555;
+  font-weight: 600;
+  border-bottom: 1px solid #ddd;
+}
+
+.custom-table td {
+  padding: 15px;
+  border-bottom: 1px solid #f0f0f0;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.status-badge {
+  font-weight: 600;
+}
+
+.status-badge.menunggu {
+  color: #333; /* Default black as per screenshot */
+}
+
+/* Button Detail */
+.btn-detail {
+  background-color: #66BB6A;
+  color: white;
+  border: none;
+  padding: 6px 20px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 60px 0;
+  color: #555;
+}
+
+.empty-icon-wrapper {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.x-badge {
+  position: absolute;
+  bottom: -5px;
+  right: -5px;
+  background: white;
+  border-radius: 50%;
+}
+
+.empty-state h3 {
+  font-weight: 500;
+  font-size: 1.2rem;
+}
