@@ -192,7 +192,7 @@ export default function DetailPengajuanPage() {
                   <tbody>
                     <tr><td>Nama</td><td>: {pengajuan.pemohon?.nama || pengajuan.nama || '-'}</td></tr>
                     <tr><td>Alamat Email</td><td>: {pengajuan.pemohon?.email || pengajuan.email || '-'}</td></tr>
-                    <tr><td>Nomor Telepon</td><td>: {pengajuan.pemohon?.noTelepon || pengajuan.nomorTelepon || '-'}</td></tr>
+                   
                   </tbody>
                 </table>
               </div>
