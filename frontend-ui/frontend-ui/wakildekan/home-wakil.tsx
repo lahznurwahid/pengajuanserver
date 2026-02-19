@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import "./wakil-dekan.css";
+import "./wakil.css";
 
 type Pengajuan = {
   id: string;
@@ -11,6 +11,9 @@ type Pengajuan = {
   status: "diproses" | "menunggu";
   tanggal: string;
   keterangan?: string;
+  email?: string;
+  statusNormalized?: string;
+  hasKepalaApproved?: boolean;
 };
 
 export default function DekanHomePage() {
@@ -160,7 +163,7 @@ export default function DekanHomePage() {
       <div className="hider"></div>
       <header className="topbar">
         <div className="top-left">
-          <div className="brand" style={{ fontSize: "24px", fontWeight: "bold" }}>wakil Dekan</div>
+          <div className="brand" style={{ fontSize: "24px", fontWeight: "bold" }}>Wakil Dekan</div>
           <img className="log01" src="/img/logo1.png" alt="Logo 1" />
           <img className="log02" src="/img/logo2.png" alt="Logo 2" />
         </div>
@@ -182,7 +185,11 @@ export default function DekanHomePage() {
 
         {/* Status boxes */}
         <div className="wakil-status-row">
-          <div className="wakil-status-card status-boxprocessed">
+          <div
+            className="wakil-status-card status-boxprocessed"
+            style={{ cursor: 'pointer' }}
+            onClick={() => router.push('/wakil-dekan/pengajuan-wadek')}
+          >
             <div className="wakil-status-title">Pengajuan yang sudah diproses</div>
             <div className="wakil-status-count">{processedCount}</div>
           </div>
@@ -218,10 +225,10 @@ export default function DekanHomePage() {
                 {loading && (
                   <tr><td colSpan={6} style={{ textAlign: 'center', padding: '24px 0' }}>Memuat pengajuan...</td></tr>
                 )}
-                {!loading && pengajuan.filter(p => p.hasKepalaApproved).length === 0 && (
+                {!loading && pengajuan.filter(p => p.hasKepalaApproved === true).length === 0 && (
                   <tr><td colSpan={6} style={{ textAlign: 'center', padding: '24px 0', color: '#999' }}>Belum ada pengajuan yang disetujui Kepala Lab.</td></tr>
                 )}
-                {!loading && pengajuan.filter(p => p.hasKepalaApproved).map((p: any) => (
+                {!loading && pengajuan.filter(p => p.hasKepalaApproved === true).map((p: any) => (
                   <tr key={p.id}>
                     <td>{p.nama}</td>
                     <td>{p.judul}</td>
@@ -230,7 +237,7 @@ export default function DekanHomePage() {
                     <td>{p.id}</td>
                     <td>
                       <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-                        <button className="wakil-badge periksa" onClick={() => router.push(`/wakil-dekan/pengajuan/${p.id}`)}>Periksa</button>
+                        <button className="wakil-badge periksa" onClick={() => router.push(`/wakildekan/${p.id}`)}>Detail</button>
                         {localStorage.getItem('role') === 'A' && (
                           <>
                             <button className="wakil-badge periksa" onClick={() => handleQuickAction(p.id, 'DISETUJUI')}>Setujui</button>

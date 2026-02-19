@@ -38,7 +38,7 @@ export default function StaffPage() {
 				const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
 				const localRole = typeof window !== 'undefined' ? localStorage.getItem('role') : null;
 				console.log("Role di Storage:", localRole);	
-				const endpoint = localRole === 'staff' ? '/api/users/pemohon' : '/api/users';
+				const endpoint = localRole === 'STAF' ? '/api/users/pemohon' : '/api/users';
 				const res = await fetch(endpoint, {
 					headers: {
 						'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ export default function StaffPage() {
 
 				if (!res.ok) {
 					if (res.status === 401) {
-						if (endpoint === '/api/users') {
+						if (endpoint === '/api/users/pemohon') {
 							setError('Unauthorized. Hanya Administrator Server (admin_server) yang dapat melihat daftar user.');
 						} else {
 							setError('Unauthorized. Silakan login sebagai Staff atau Administrator Server.');

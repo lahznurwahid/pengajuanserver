@@ -23,6 +23,23 @@
     position: relative; 
 }
 
+.logos {
+  display: flex;
+  gap: 12px;
+  margin-left: 16px;
+  align-items: center;
+}
+.log01{
+  
+    width:52px;
+    height:26px
+    
+}
+.log02{
+    width:104px;
+    height:26px;
+    
+}
 
 .top-left {
     display: flex;

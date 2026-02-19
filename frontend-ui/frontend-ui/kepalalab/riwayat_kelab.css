@@ -222,6 +222,25 @@
   transition: all 0.3s ease;
 }
 
+.logos {
+  display: flex;
+  gap: 12px;
+  margin-left: 16px;
+  align-items: center;
+}
+
+.log01{
+  
+    width:52px;
+    height:26px
+    
+}
+.log02{
+    width:104px;
+    height:26px;
+    
+}
+
 .btn-back:hover {
   background-color: #e0e0e0;
 }

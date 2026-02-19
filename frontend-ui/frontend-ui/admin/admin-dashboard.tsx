@@ -104,7 +104,7 @@ const AdminDashboard = () => {
           <button
             className={`nav-link ${currentView === 'dashboard' ? 'active' : ''}`}
             onClick={() => setCurrentView('dashboard')}
-            style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+            style={{ color: 'none', fontWeight: 'none'}}
           >
             Dashboard
           </button>
@@ -130,11 +130,10 @@ const AdminDashboard = () => {
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="admin-main-content">
         {currentView === 'dashboard' ? (
           <>
-            {/* Welcome Card */}
+          
             <div className="welcome-card">
               <div className="welcome-content">
                 <h2>Selamat Datang, (Nama Admin Server)</h2>

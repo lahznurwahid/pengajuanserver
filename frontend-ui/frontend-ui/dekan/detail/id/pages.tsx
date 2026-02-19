@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { ArrowLeft, CheckCircle, XCircle } from "lucide-react";
-import "../../kepala-lab.css";
+import "../../kepala.css";
 
 interface Pengajuan {
   id: string;

@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import RiwayatDekan from './riwayat';
+import { useRouter, usePathname } from "next/navigation";
 import "./home.css";
 
 type Pengajuan = {
@@ -15,13 +17,13 @@ type Pengajuan = {
 
 export default function DekanHomePage() {
   const router = useRouter();
+  const pathname = usePathname();
   const [pengajuan, setPengajuan] = useState<Pengajuan[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [userName, setUserName] = useState("Dekan");
   const [processedCount, setProcessedCount] = useState(0);
   const [pendingCount, setPendingCount] = useState(0);
-  const [activeTab, setActiveTab] = useState<'home' | 'riwayat'>('home');
 
   useEffect(() => {
     // Cek autentikasi
@@ -123,10 +125,6 @@ export default function DekanHomePage() {
     }
   };
 
-  const handleTabChange = (tab: 'home' | 'riwayat') => {
-    setActiveTab(tab);
-  };
-
   return (
     <div className="staff-page">
       <div className="hider"></div>
@@ -136,7 +134,68 @@ export default function DekanHomePage() {
           <img className="log01" src="/img/logo1.png" alt="Logo 1" />
           <img className="log02" src="/img/logo2.png" alt="Logo 2" />
         </div>
-        <div className="top-right">
+        
+        <div style={{
+          display: 'flex',
+          gap: '30px',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          position: 'absolute',
+          left: '50%',
+          transform: 'translateX(-50%)'
+        }}>
+          <Link 
+            href="/dekan"
+            style={{
+              padding: '8px 0',
+              textDecoration: 'none',
+              fontSize: '16px',
+              fontWeight: pathname === '/dekan' ? 'bold' : 'normal',
+              color: pathname === '/dekan' ? '#1f8a3d' : '#333',
+              borderBottom: pathname === '/dekan' ? '3px solid #1f8a3d' : 'none'
+            }}
+          >
+            Home
+            {pendingCount > 0 && pathname !== '/dekan' && (
+              <span style={{
+                marginLeft: '8px',
+                backgroundColor: '#ff4444',
+                color: 'white',
+                borderRadius: '50%',
+                padding: '2px 6px',
+                fontSize: '12px'
+              }}>
+                {pendingCount}
+              </span>
+            )}
+          </Link>
+          <Link 
+            href="/dekan/riwayat"
+            style={{
+              padding: '8px 0',
+              textDecoration: 'none',
+              fontSize: '16px',
+              fontWeight: pathname === '/dekan/riwayat' ? 'bold' : 'normal',
+              color: pathname === '/dekan/riwayat' ? '#1f8a3d' : '#333',
+              borderBottom: pathname === '/dekan/riwayat' ? '3px solid #1f8a3d' : 'none'
+            }}
+          >
+            Riwayat
+          </Link>
+        </div>
+
+        <div className="top-right" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          {/* Informasi user di sebelah kanan sebelum logout */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+            color: '#666',
+            fontSize: '14px'
+          }}>
+            <span>Log</span>
+            <span style={{ fontWeight: 'bold' }}>tang, {userName}</span>
+          </div>
           <button className="logout" onClick={handleLogout}>Logout</button>
         </div>
       </header>
@@ -154,27 +213,15 @@ export default function DekanHomePage() {
 
         {/* Status boxes dengan fungsi navigasi */}
         <div className="status-boxes">
-          <div 
-            className={`status-box processed ${activeTab === 'riwayat' ? 'active' : ''}`}
-            onClick={() => handleTabChange('riwayat')}
-            style={{ 
-              cursor: 'pointer',
-              backgroundColor: activeTab === 'riwayat' ? '#e8f5e9' : 'transparent',
-              transition: 'all 0.3s ease'
-            }}
+          <Link 
+            href="/dekan/riwayat"
+            className="status-box processed"
+            style={{ textDecoration: 'none' }}
           >
             <span className="icon"></span>
             <span>{processedCount} Pengajuan Diproses</span>
-          </div>
-          <div 
-            className={`status-box pending ${activeTab === 'home' ? 'active' : ''}`}
-            onClick={() => handleTabChange('home')}
-            style={{ 
-              cursor: 'pointer',
-              backgroundColor: activeTab === 'home' ? '#fff3e0' : 'transparent',
-              transition: 'all 0.3s ease'
-            }}
-          >
+          </Link>
+          <div className="status-box pending">
             <span className="icon"></span>
             <span>{pendingCount} Menunggu Diproses</span>
           </div>
@@ -184,83 +231,9 @@ export default function DekanHomePage() {
           <div className="kelola-inner">Daftar Pengajuan</div>
         </section>
 
-        {/* Navigasi Tabs Home dan Riwayat */}
-        <div className="navigasi-tabs" style={{
-          display: 'flex',
-          gap: '20px',
-          margin: '0 20px 20px 20px',
-          borderBottom: '2px solid #e0e0e0',
-          paddingBottom: '10px'
-        }}>
-          <button
-            onClick={() => handleTabChange('home')}
-            style={{
-              padding: '8px 24px',
-              border: 'none',
-              background: 'none',
-              cursor: 'pointer',
-              fontSize: '16px',
-              fontWeight: activeTab === 'home' ? 'bold' : 'normal',
-              color: activeTab === 'home' ? '#1f8a3d' : '#666',
-              borderBottom: activeTab === 'home' ? '3px solid #1f8a3d' : 'none',
-              transition: 'all 0.3s ease',
-              position: 'relative'
-            }}
-          >
-            Home
-            {activeTab === 'home' && pendingCount > 0 && (
-              <span style={{
-                position: 'absolute',
-                top: '-5px',
-                right: '-5px',
-                backgroundColor: '#ff4444',
-                color: 'white',
-                borderRadius: '50%',
-                padding: '2px 6px',
-                fontSize: '10px',
-                fontWeight: 'bold'
-              }}>
-                {pendingCount}
-              </span>
-            )}
-          </button>
-          <button
-            onClick={() => handleTabChange('riwayat')}
-            style={{
-              padding: '8px 24px',
-              border: 'none',
-              background: 'none',
-              cursor: 'pointer',
-              fontSize: '16px',
-              fontWeight: activeTab === 'riwayat' ? 'bold' : 'normal',
-              color: activeTab === 'riwayat' ? '#1f8a3d' : '#666',
-              borderBottom: activeTab === 'riwayat' ? '3px solid #1f8a3d' : 'none',
-              transition: 'all 0.3s ease',
-              position: 'relative'
-            }}
-          >
-            Riwayat
-            {activeTab === 'riwayat' && processedCount > 0 && (
-              <span style={{
-                position: 'absolute',
-                top: '-5px',
-                right: '-5px',
-                backgroundColor: '#4CAF50',
-                color: 'white',
-                borderRadius: '50%',
-                padding: '2px 6px',
-                fontSize: '10px',
-                fontWeight: 'bold'
-              }}>
-                {processedCount}
-              </span>
-            )}
-          </button>
-        </div>
-
         <section className="users-area">
           <div className="pengajuan-card">
-            <h2><b>{activeTab === 'home' ? 'Pengajuan Menunggu' : 'Riwayat Pengajuan Diproses'}</b></h2>
+            <h2><b>Pengajuan</b></h2>
             
             {error && (
               <div className="error-message" style={{
@@ -304,51 +277,37 @@ export default function DekanHomePage() {
                       </td>
                     </tr>
                   )}
-                  {!loading && pengajuan.filter(p => activeTab === 'home' ? p.status === 'menunggu' : p.status === 'diproses').length === 0 && (
-                    <tr>
-                      <td colSpan={6} style={{ textAlign: 'center', color: '#aaa', padding: '32px 0' }}>
-                        {activeTab === 'home' 
-                          ? 'Tidak ada pengajuan yang menunggu diproses.' 
-                          : 'Belum ada riwayat pengajuan yang diproses.'}
+                  {pengajuan.map((p) => (
+                    <tr key={p.id}>
+                      <td>{p.nama}</td>
+                      <td>{p.judul}</td>
+                      <td>{new Date(p.tanggal).toLocaleDateString('id-ID')}</td>
+                      <td>
+                        {p.status === 'diproses' ? (
+                          <span style={{ color: '#1f8a3d', fontWeight: 600 }}>Diproses</span>
+                        ) : (
+                          <span style={{ color: '#b89c1c', fontWeight: 600 }}>Menunggu</span>
+                        )}
+                      </td>
+                      <td>{p.keterangan || '-'}</td>
+                      <td>
+                        <button 
+                          onClick={() => handleViewDetail(p.id, p.status)}
+                          style={{
+                            padding: '6px 12px',
+                            backgroundColor: '#4CAF50',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '4px',
+                            cursor: 'pointer',
+                            fontSize: '12px'
+                          }}
+                        >
+                          Detail
+                        </button>
                       </td>
                     </tr>
-                  )}
-                  {pengajuan
-                    .filter(p => activeTab === 'home' ? p.status === 'menunggu' : p.status === 'diproses')
-                    .map((p) => (
-                      <tr key={p.id}>
-                        <td>{p.nama}</td>
-                        <td>{p.judul}</td>
-                        <td>{new Date(p.tanggal).toLocaleDateString('id-ID')}</td>
-                        <td>
-                          {p.status === 'diproses' ? (
-                            <span style={{ color: '#1f8a3d', fontWeight: 600 }}>Diproses</span>
-                          ) : (
-                            <span style={{ color: '#b89c1c', fontWeight: 600 }}>Menunggu</span>
-                          )}
-                        </td>
-                        <td>{p.keterangan || '-'}</td>
-                        <td>
-                          <button 
-                            onClick={() => handleViewDetail(p.id, p.status)}
-                            style={{
-                              padding: '6px 12px',
-                              backgroundColor: '#4CAF50',
-                              color: 'white',
-                              border: 'none',
-                              borderRadius: '4px',
-                              cursor: 'pointer',
-                              fontSize: '12px',
-                              transition: 'background-color 0.3s ease'
-                            }}
-                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#45a049'}
-                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#4CAF50'}
-                          >
-                            Detail
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
+                  ))}
                 </tbody>
               </table>
             </div>

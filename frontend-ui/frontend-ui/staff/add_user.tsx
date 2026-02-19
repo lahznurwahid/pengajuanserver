@@ -65,11 +65,10 @@ export default function AddUserPage() {
 			<header className="topbar">
 				<div className="top-left">
 					<div className="brand" style={{ fontSize: "24px", fontWeight: "bold" }}>Staff</div>
-					<div className="logos">
-						{Array.from({ length: 6 }).map((_, i) => (
-							<div className="logo" key={i} aria-hidden />
-						))}
-					</div>
+                <div className="logos">
+            <img className="log01" src="/img/logo1.png" alt="Logo 1" />
+            <img className="log02" src="/img/logo2.png" alt="Logo 2" />     
+                </div>
 				</div>
 				<div className="top-right">
 					<button className="logout">Logout</button>

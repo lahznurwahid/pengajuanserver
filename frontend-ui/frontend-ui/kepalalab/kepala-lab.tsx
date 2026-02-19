@@ -85,6 +85,11 @@ const waitingStatuses = new Set(['DIAJUKAN', 'DITANGGUHKAN']);
       <header className="topbar">
         <div className="top-left">
           <div className="brand" style={{ fontSize: "24px", fontWeight: "bold", color: "#4D9E5B" }}>Kepala Lab</div>
+                <div className="logos">
+            <img className="log01" src="/img/logo1.png" alt="Logo 1" />
+            <img className="log02" src="/img/logo2.png" alt="Logo 2" />     
+                </div>
+                
           <nav className="nav-links">
             <a 
               className={activePage === 'home' ? 'active' : ''} 
