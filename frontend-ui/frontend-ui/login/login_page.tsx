@@ -11,6 +11,7 @@ export default function LoginPage() {
   const [role, setRole] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -27,29 +28,30 @@ export default function LoginPage() {
       });
 
       const contentType = response.headers.get('content-type') || '';
+      // Log status dan content-type
+      console.log('Login response:', response.status, contentType);
 
+      // Jika response bukan JSON, tampilkan error HTML/text
+      if (!contentType.includes('application/json')) {
+        const text = await response.text().catch(() => '');
+        setError(`Server error: ${response.status}\n${text.slice(0, 300)}`);
+        setLoading(false);
+        return;
+      }
+
+      // Jika response error, tampilkan pesan dari JSON
       if (!response.ok) {
-        let message = 'Login gagal';
-        if (contentType.includes('application/json')) {
-          const data = await response.json();
-          message = data.message || message;
-        } else {
-          const text = await response.text().catch(() => '');
-          message = text ? text.slice(0, 200) : message;
-        }
-        throw new Error(message);
+        const data = await response.json();
+        setError(data.message || 'Login gagal');
+        setLoading(false);
+        return;
       }
 
-      let data = { token: '', user: null as any };
-      if (contentType.includes('application/json')) {
-        data = await response.json();
-      }
-
-      // Simpan data ke localStorage
+      // Success
+      const data = await response.json();
       localStorage.setItem('token', data.token);
       localStorage.setItem('role', data.user.role);
       localStorage.setItem('userData', JSON.stringify(data.user));
-      
       console.log('Login success, data saved to localStorage');
 
       // Tentukan redirect path
@@ -77,9 +79,8 @@ export default function LoginPage() {
           redirectPath = '/login';
       }
 
-      // Gunakan router.push untuk navigasi
       router.push(redirectPath);
-      router.refresh(); // Refresh untuk memastikan state ter-update
+      router.refresh();
 
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Terjadi kesalahan');
@@ -126,15 +127,44 @@ export default function LoginPage() {
 
             <div className="form-group">
               <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                placeholder="Masukkan password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+              <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  id="password"
+                  name="password"
+                  placeholder="Masukkan password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  style={{ paddingRight: '36px', width: '100%' }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  style={{
+                    position: 'absolute',
+                    right: 0,
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: '0 8px',
+                    height: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                  }}
+                  aria-label={showPassword ? 'Sembunyikan password' : 'Tampilkan password'}
+                >
+                  {showPassword ? (
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 5C7 5 2.73 8.11 1 12c1.73 3.89 6 7 11 7s9.27-3.11 11-7c-1.73-3.89-6-7-11-7zm0 12c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8a3 3 0 100 6 3 3 0 000-6z" fill="#555"/>
+                    </svg>
+                  ) : (
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 5c-5 0-9.27 3.11-11 7 1.13 2.54 3.37 4.66 6.09 5.67l-1.42 1.42c-2.97-1.23-5.37-3.61-6.67-6.09C2.73 8.11 7 5 12 5c2.08 0 4.05.5 5.81 1.36l-1.43 1.43C15.05 7.5 13.56 7 12 7zm0 12c-2.76 0-5-2.24-5-5 0-.56.09-1.1.24-1.61l1.43 1.43c-.09.36-.14.74-.14 1.18 0 1.66 1.34 3 3 3 .44 0 .82-.05 1.18-.14l1.43 1.43c-.51.15-1.05.24-1.61.24zm7.19-2.36l-1.43-1.43c.09-.36.14-.74.14-1.18 0-1.66-1.34-3-3-3-.44 0-.82.05-1.18.14l-1.43-1.43c.51-.15 1.05-.24 1.61-.24 2.76 0 5 2.24 5 5 0 .56-.09 1.1-.24 1.61z" fill="#555"/>
+                    </svg>
+                  )}
+                </button>
+              </div>
             </div>
 
             <div className="form-group">
@@ -154,6 +184,25 @@ export default function LoginPage() {
                 <option value="dekan">Dekan</option>
                 <option value="admin_server">Administrator Server</option>
               </select>
+            </div>
+
+            <div className="form-links" style={{ marginTop: '12px', display: 'flex', flexDirection: 'row', gap: '24px' }}>
+              <a
+                href="https://docs.google.com/forms/d/e/1FAIpQLScbjEWrSpCRYNDokilDnuYSSqqlke2cgAOzU7Su8ujuyWbD0g/viewform?usp=publish-editor"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: '#0070f3', textDecoration: 'underline', fontSize: '14px', fontWeight: 500 }}
+              >
+                Reset Password?
+              </a>
+              <a
+                href="https://docs.google.com/forms/d/e/1FAIpQLSdBFNXP7YIllFIgujI91sAVGZt-dIYH8Kuc2C0wdR_VEHWiaQ/viewform?usp=publish-editor"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: '#0070f3', textDecoration: 'underline', fontSize: '14px', fontWeight: 500 }}
+              >
+                Registrasi
+              </a>
             </div>
           
             <button type="submit" className="btn-login" disabled={loading}>

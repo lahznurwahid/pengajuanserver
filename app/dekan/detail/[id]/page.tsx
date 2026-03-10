@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { ArrowLeft, CheckCircle, XCircle } from "lucide-react";
-import "../../kepala.css";
+import "./kepala-lab.css";
 
 interface Pengajuan {
   id: string;
@@ -76,7 +76,7 @@ export default function DetailPengajuanPage() {
 
       const res = await fetch(`/api/pengajuan/${params.id}`, { headers, cache: 'no-store' });
       const result = await res.json();
-      
+
       if (result.data) {
         setPengajuan(result.data);
       } else {
@@ -120,7 +120,6 @@ export default function DetailPengajuanPage() {
         alert(status === "DISETUJUI" ? "Pengajuan berhasil disetujui" : "Pengajuan berhasil ditolak");
         setCatatan("");
         setActionType(null);
-        // Refresh data agar UI terupdate dan tombol hilang
         await fetchDetail();
       } else {
         const result = await res.json();
@@ -134,22 +133,24 @@ export default function DetailPengajuanPage() {
   };
 
   // --- LOGIKA PENGECEKAN STATUS ---
-  // Kita buat normalize role agar tidak sensitif terhadap besar kecil huruf atau strip
   const checkRole = (role: string | undefined, target: string) => {
     if (!role) return false;
     const normalized = role.toUpperCase().replace("-", "_");
     return normalized === target.toUpperCase().replace("-", "_");
   };
 
-  // 1. Cek apakah Kepala Lab sudah memberikan keputusan
-  const kepalaLabDecision = pengajuan?.persetujuan?.find(
-    (p: any) => checkRole(p.user?.role, "KEPALA_LAB")
+  // 1. Cek apakah Dekan sudah memberikan keputusan
+  const dekanDecision = pengajuan?.persetujuan?.find(
+    (p: any) => checkRole(p.user?.role, "DEKAN")
   );
 
-  // 2. Cek apakah sudah ditolak oleh WADEK
-  const wadekDitolak = pengajuan?.persetujuan?.find(
-    (p: any) => checkRole(p.user?.role, "WADEK") && p.status === "DITOLAK"
+  // 2. Cek apakah WADEK sudah menyetujui (syarat agar Dekan bisa bertindak)
+  const wadekDisetujui = pengajuan?.persetujuan?.find(
+    (p: any) => checkRole(p.user?.role, "WADEK") && p.status === "DISETUJUI"
   );
+
+  // 3. Dekan bisa bertindak jika WADEK sudah setuju dan Dekan belum memutuskan
+  const dekanCanAct = !!wadekDisetujui && !dekanDecision;
 
   if (loading) return <div className="staff-page"><div className="main-content">Memuat data...</div></div>;
   if (!pengajuan) return <div className="staff-page"><div className="main-content">{error || "Data tidak ditemukan"}</div></div>;
@@ -158,17 +159,15 @@ export default function DetailPengajuanPage() {
     <div className="staff-page">
       <header className="topbar">
         <div className="top-left">
-          <div className="brand" style={{ fontSize: "24px", fontWeight: "bold", color: "#4D9E5B" }}>Kepala Lab</div>
-
-                  <div className="logos">
+          <div className="brand" style={{ fontSize: "24px", fontWeight: "bold", color: "#4D9E5B" }}>Dekan</div>
+          <div className="logos">
             <img className="log01" src="/img/logo1.png" alt="Logo 1" />
             <img className="log02" src="/img/logo2.png" alt="Logo 2" />
-           
           </div>
         </div>
         <nav className="nav-links">
-          <a onClick={() => router.push('/kelab')} style={{ cursor: 'pointer' }}>Home</a>
-          <a onClick={() => router.push('/kelab')} style={{ cursor: 'pointer' }} className="active">Riwayat</a>
+          <a onClick={() => router.push('/dekan')} style={{ cursor: 'pointer' }}>Home</a>
+          <a onClick={() => router.push('/dekan')} style={{ cursor: 'pointer' }} className="active">Riwayat</a>
         </nav>
         <div className="top-right">
           <button className="logout" onClick={handleLogout}>Logout</button>
@@ -180,6 +179,13 @@ export default function DetailPengajuanPage() {
           <h1 style={{ fontSize: '24px', fontWeight: 'bold', textAlign: 'center' }}>Detail Pengajuan Layanan</h1>
         </div>
 
+        {/* Banner jika pengajuan DITOLAK */}
+        {pengajuan && (pengajuan as any).status === 'DITOLAK' && (
+          <div style={{ marginBottom: '16px', padding: '12px', background: '#fff6f6', border: '1px solid #f2dede', borderRadius: '8px', color: '#a94442', textAlign: 'center', fontWeight: 700 }}>
+            Status Pengajuan: DITOLAK
+          </div>
+        )}
+
         <div className="users-card">
           <div style={{ marginBottom: "24px" }}>
             <button className="btn-back" onClick={() => router.back()} style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#f0f0f0', border: 'none', padding: '10px 16px', borderRadius: '8px', cursor: 'pointer', fontWeight: '600' }}>
@@ -187,7 +193,11 @@ export default function DetailPengajuanPage() {
             </button>
           </div>
 
-          {error && <div style={{ color: 'red', marginBottom: '15px', padding: '10px', background: '#fee', borderRadius: '8px' }}>{error}</div>}
+          {error && (
+            <div style={{ color: 'red', marginBottom: '15px', padding: '10px', background: '#fee', borderRadius: '8px' }}>
+              {error}
+            </div>
+          )}
 
           {/* --- DATA DISPLAY --- */}
           <div style={{ background: '#f7faf7', borderRadius: '16px', padding: '32px 24px', marginBottom: '32px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
@@ -198,7 +208,6 @@ export default function DetailPengajuanPage() {
                   <tbody>
                     <tr><td>Nama</td><td>: {pengajuan.pemohon?.nama || pengajuan.nama || '-'}</td></tr>
                     <tr><td>Alamat Email</td><td>: {pengajuan.pemohon?.email || pengajuan.email || '-'}</td></tr>
-                   
                   </tbody>
                 </table>
               </div>
@@ -254,7 +263,11 @@ export default function DetailPengajuanPage() {
                     <div style={{ marginTop: '5px', fontSize: '14px' }}>
                       Status: <span style={{ color: approval.status === 'DISETUJUI' ? '#3aa96a' : '#e53935', fontWeight: 'bold' }}>{approval.status}</span>
                     </div>
-                    {approval.catatan && <div style={{ marginTop: '8px', fontSize: '13px', fontStyle: 'italic', color: '#555' }}>Catatan: "{approval.catatan}"</div>}
+                    {approval.catatan && (
+                      <div style={{ marginTop: '8px', fontSize: '13px', fontStyle: 'italic', color: '#555' }}>
+                        Catatan: "{approval.catatan}"
+                      </div>
+                    )}
                   </div>
                 ))
               ) : (
@@ -263,16 +276,25 @@ export default function DetailPengajuanPage() {
             </div>
           </div>
 
-          {/* --- TOMBOL AKSI (Hanya muncul jika belum ada keputusan) --- */}
-          {!kepalaLabDecision && !wadekDitolak ? (
+          {/* --- TOMBOL AKSI --- */}
+          {dekanCanAct ? (
+            // Dekan belum memutuskan dan WADEK sudah setuju => tampilkan tombol Setujui/Tolak
             <div style={{ marginTop: '40px', padding: '20px', background: '#eaf6ee', borderRadius: '12px', textAlign: 'center' }}>
-              <h2 style={{ fontSize: '18px', marginBottom: '15px' }}>Tindakan Kepala Lab</h2>
+              <h2 style={{ fontSize: '18px', marginBottom: '15px' }}>Tindakan Dekan</h2>
               {actionType === null ? (
                 <div style={{ display: 'flex', justifyContent: 'center', gap: '15px' }}>
-                  <button onClick={() => setActionType("approve")} disabled={submitting} style={{ background: '#1f8a3d', color: '#fff', border: 'none', padding: '10px 24px', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <button
+                    onClick={() => setActionType("approve")}
+                    disabled={submitting}
+                    style={{ background: '#1f8a3d', color: '#fff', border: 'none', padding: '10px 24px', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
+                  >
                     <CheckCircle size={18} /> Setujui
                   </button>
-                  <button onClick={() => setActionType("reject")} disabled={submitting} style={{ background: '#e53935', color: '#fff', border: 'none', padding: '10px 24px', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <button
+                    onClick={() => setActionType("reject")}
+                    disabled={submitting}
+                    style={{ background: '#e53935', color: '#fff', border: 'none', padding: '10px 24px', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
+                  >
                     <XCircle size={18} /> Tolak
                   </button>
                 </div>
@@ -286,24 +308,37 @@ export default function DetailPengajuanPage() {
                     rows={3}
                   />
                   <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
-                    <button onClick={() => setActionType(null)} disabled={submitting} style={{ background: '#ccc', border: 'none', padding: '8px 20px', borderRadius: '8px', cursor: 'pointer' }}>Batal</button>
-                    <button 
+                    <button
+                      onClick={() => setActionType(null)}
+                      disabled={submitting}
+                      style={{ background: '#ccc', border: 'none', padding: '8px 20px', borderRadius: '8px', cursor: 'pointer' }}
+                    >
+                      Batal
+                    </button>
+                    <button
                       onClick={() => handleAction(actionType === "approve" ? "DISETUJUI" : "DITOLAK")}
                       disabled={submitting}
                       style={{ background: actionType === "approve" ? '#1f8a3d' : '#e53935', color: '#fff', border: 'none', padding: '8px 20px', borderRadius: '8px', cursor: 'pointer' }}
                     >
-                      {submitting ? "Memproses..." : `Konfirmasi ${actionType === "approve" ? "Setuju" : "Tolak"}`}
+                      {submitting
+                        ? "Memproses..."
+                        : actionType === "approve"
+                        ? "Konfirmasi Setuju"
+                        : "Konfirmasi Tolak"}
                     </button>
                   </div>
                 </div>
               )}
             </div>
           ) : (
+            // Dekan sudah memutuskan, atau WADEK belum setuju
             <div style={{ marginTop: '40px', padding: '20px', background: '#f0f0f0', borderRadius: '12px', textAlign: 'center', border: '1px solid #ddd' }}>
               <p style={{ fontWeight: 'bold', margin: 0, color: '#444' }}>
-                {kepalaLabDecision 
-                  ? `KEPUTUSAN ANDA: ${kepalaLabDecision.status}` 
-                  : "PENGAJUAN INI SUDAH DITOLAK OLEH WAKIL DEKAN"}
+                {dekanDecision
+                  ? `KEPUTUSAN ANDA: ${dekanDecision.status}`
+                  : !wadekDisetujui
+                  ? "MENUNGGU PERSETUJUAN WAKIL DEKAN"
+                  : "PENGAJUAN INI SUDAH DIPROSES"}
               </p>
             </div>
           )}

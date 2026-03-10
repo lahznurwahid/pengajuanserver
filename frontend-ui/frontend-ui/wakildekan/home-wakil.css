@@ -1,3 +1,4 @@
+
 :root{
 	--bg:#eaf6ee;
 	--green:#1f8a3d;
@@ -14,6 +15,13 @@
     height: 65px;
 }
 
+.top-nav{
+    display:flex;
+    gap:25px;
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+}
 *{box-sizing:border-box}
 body,html,#root{height:100%;}
 .staff-page{
@@ -89,6 +97,7 @@ body,html,#root{height:100%;}
   overflow: hidden;
   padding: 0; 
   max-height: 180px;
+  margin-top: 10px;
 }
 
 .hero-left {
@@ -138,11 +147,7 @@ body,html,#root{height:100%;}
   pointer-events: none;
 }
 
-.kelola{
-    display:flex;
-    justify-content:center;
-    margin:24px 0
-}
+
 
 .kelola-inner{
     background:rgba(255,255,255,0.8);
@@ -258,6 +263,8 @@ body,html,#root{height:100%;}
     color:#7a7a7a
 }
 
+
+
 @media (max-width:900px){
 	.users-area{flex-direction:column}
 	.add-card{width:100%}
@@ -269,7 +276,7 @@ body,html,#root{height:100%;}
 
 .wakil-status-row {
 	display: flex;
-	gap: 32px;
+	gap: 20px;
 	justify-content: center;
 	margin: 24px 0 32px 0;
 }
@@ -277,7 +284,7 @@ body,html,#root{height:100%;}
 	flex: 1 1 0;
 	min-width: 220px;
 	border-radius: 12px;
-	padding: 24px 0 18px 0;
+	padding: 12px 0 18px 0;
 	text-align: center;
 	color: #fff;
 	font-weight: 500;
@@ -285,25 +292,25 @@ body,html,#root{height:100%;}
 	box-shadow: 0 2px 8px #0001;
 }
 .status-boxprocessed {
-	background: #6fcf97;
+	background: #4D9E5B;
 }
 .status-boxpending {
-	background: #f2c94c;
-	color: #333;
+	background: #FFCC00;
+	color: #ffffff;
 }
 .status-boxrejected {
-    background: #eb5757;
+    background: #f03535;
 }
 .wakil-status-title {
 	margin-bottom: 8px;
 }
 .wakil-status-count {
-	font-size: 2.2rem;
+	font-size: 2.5rem;
 	font-weight: 700;
 }
 
 .wakil-table-section {
-	max-width: 950px;
+	max-width: 1100px;
 	margin: 0 auto 32px auto;
 	background: #fff;
 	border-radius: 14px;

@@ -1,0 +1,49 @@
+/* Add User Modal Styles */
+.add-user-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.add-user-modal {
+  background: #fff;
+  border-radius: 12px;
+  width: 520px;
+  max-width: 95%;
+  padding: 20px 22px;
+  box-shadow: 0 8px 24px rgba(3,7,18,0.12);
+}
+
+.add-user-modal h3 {
+  margin: 0 0 12px 0;
+  font-size: 18px;
+  color: #0f172a;
+}
+
+.add-user-form {
+  display: grid;
+  gap: 10px;
+}
+
+.add-user-form label { font-weight: 600; font-size: 13px; color: #334155; }
+.add-user-form input,
+.add-user-form select {
+  padding: 10px 12px;
+  border: 1px solid #e6edf0;
+  border-radius: 8px;
+  font-size: 14px;
+  width: 100%;
+}
+
+.add-user-form .form-row { display: flex; gap: 8px; }
+.add-user-form .form-row .col { flex: 1; }
+
+.add-user-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:8px; }
+.btn-primary-sm { background:#4D9E5B; color:#fff; border:none; padding:8px 14px; border-radius:8px; font-weight:700; cursor:pointer; }
+.btn-ghost { background:transparent; border:1px solid #e6edf0; padding:8px 12px; border-radius:8px; cursor:pointer; }
+
+.form-error { color: #dc2626; font-size: 13px; }

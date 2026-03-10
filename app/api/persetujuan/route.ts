@@ -21,7 +21,10 @@ export async function GET(request: Request) {
   try {
     const auth = await authenticateRequest(request);
 
-    if (!auth || !hasRole(auth, [Roles.KEPALA_LAB, Roles.WADEK, Roles.DEKAN, Roles.ADMIN_SERVER])) {
+    if (
+      !auth ||
+      !hasRole(auth, [Roles.KEPALA_LAB, Roles.WADEK, Roles.DEKAN, Roles.ADMIN_SERVER])
+    ) {
       return NextResponse.json({ message: "Unauthorized." }, { status: 401 });
     }
 
@@ -32,11 +35,11 @@ export async function GET(request: Request) {
     const persetujuan = await prisma.persetujuan.findMany({
       where: pengajuanId ? { pengajuanId } : undefined,
       orderBy: { tanggal: "desc" },
-      include: { 
+      include: {
         user: {
-          select: { nama: true, role: true }
-        }, 
-        pengajuan: true 
+          select: { nama: true, role: true },
+        },
+        pengajuan: true,
       },
     });
 
@@ -51,7 +54,10 @@ export async function POST(request: Request) {
   try {
     const auth = await authenticateRequest(request);
 
-    if (!auth || !hasRole(auth, [Roles.KEPALA_LAB, Roles.WADEK, Roles.DEKAN, Roles.ADMIN_SERVER])) {
+    if (
+      !auth ||
+      !hasRole(auth, [Roles.KEPALA_LAB, Roles.WADEK, Roles.DEKAN, Roles.ADMIN_SERVER])
+    ) {
       return NextResponse.json({ message: "Unauthorized." }, { status: 401 });
     }
 
@@ -60,72 +66,117 @@ export async function POST(request: Request) {
 
     const { status, catatan, pengajuanId } = data;
 
-    // Ambil data pengajuan untuk cek status saat ini
+    // Ambil data pengajuan beserta riwayat persetujuan
     const pengajuan = await prisma.pengajuanServer.findUnique({
       where: { id: pengajuanId },
       include: { persetujuan: { include: { user: true } } },
     });
 
     if (!pengajuan) {
-      return NextResponse.json({ message: "Pengajuan not found." }, { status: 404 });
+      return NextResponse.json(
+        { message: "Pengajuan not found." },
+        { status: 404 }
+      );
     }
 
-    // 1. Cek apakah user dengan role ini sudah pernah memberi persetujuan
-    const alreadyResponded = pengajuan.persetujuan.some(p => p.user?.role === auth.role);
+    // Normalisasi role agar tidak case-sensitive
+    const normalizeRole = (role: string | undefined | null) =>
+      role?.toUpperCase().replace(/-/g, "_") ?? "";
+
+    // Cek apakah role ini sudah pernah memberi persetujuan
+    const alreadyResponded = pengajuan.persetujuan.some(
+      (p) => normalizeRole(p.user?.role) === normalizeRole(auth.role)
+    );
+
     if (alreadyResponded) {
-      return NextResponse.json({ message: "Anda sudah memberikan persetujuan sebelumnya." }, { status: 409 });
+      return NextResponse.json(
+        { message: "Anda sudah memberikan persetujuan sebelumnya." },
+        { status: 409 }
+      );
     }
 
-    // 2. Simpan record persetujuan
-    const newPersetujuan = await prisma.persetujuan.create({
-      data: {
-        status,
-        catatan: catatan ?? null,
-        pengajuan: { connect: { id: pengajuanId } },
-        user: { connect: { id: auth.userId } },
-      },
-    });
-
-    // 3. LOGIKA UPDATE STATUS GLOBAL
-    let nextStatus = pengajuan.status; // Default tetap
-
-    if (status === "DITOLAK") {
-      nextStatus = "DITOLAK"; // Jika ditolak siapapun, langsung ganti status jadi DITOLAK
-    } else {
-      // Jika DISETUJUI, tentukan tahap berikutnya berdasarkan role
-      if (auth.role === Roles.KEPALA_LAB) nextStatus = "DIPERIKSA";   // Lanjut ke Wadek
-      if (auth.role === Roles.WADEK) nextStatus = "DISETUJUI";        // Lanjut ke Dekan
-      if (auth.role === Roles.DEKAN) nextStatus = "DIPROSES";         // Final, lanjut ke Admin Server
-    }
-
-    if (nextStatus) {
-      await prisma.pengajuanServer.update({
-        where: { id: pengajuanId },
-        data: { 
-          status: nextStatus as any // Gunakan 'as any' untuk memaksa TypeScript menerima value ini
+    // Simpan record persetujuan baru — ini dilakukan PERTAMA
+    // FIX: Pisahkan try-catch per operasi agar tahu persis mana yang gagal
+    let newPersetujuan;
+    try {
+      newPersetujuan = await prisma.persetujuan.create({
+        data: {
+          status,
+          catatan: catatan ?? null,
+          pengajuan: { connect: { id: pengajuanId } },
+          user: { connect: { id: auth.userId } },
         },
       });
+    } catch (createError) {
+      console.error("Gagal membuat persetujuan:", createError);
+      return NextResponse.json(
+        { message: "Gagal menyimpan persetujuan." },
+        { status: 500 }
+      );
     }
-    
-    await prisma.pengajuanServer.update({
-      where: { id: pengajuanId },
-      data: { status: nextStatus },
-    });
 
-    // 4. Audit Log
-    await createAuditLog({
-      pengajuanId,
-      userId: auth.userId,
-      action: "PERSETUJUAN",
-      detail: `Role: ${auth.role} | Status: ${status} | Note: ${catatan || "-"}`,
-    });
+    // LOGIKA UPDATE STATUS GLOBAL
+    let nextStatus = pengajuan.status;
+
+    if (status === "DITOLAK") {
+      if (normalizeRole(auth.role) === normalizeRole(Roles.WADEK)) {
+        nextStatus = "DIPERIKSA";
+      } else if (normalizeRole(auth.role) === normalizeRole(Roles.DEKAN)) {
+        nextStatus = "DISETUJUI";
+      } else {
+        // Kepala Lab menolak → penolakan final
+        nextStatus = "DITOLAK";
+      }
+    } else {
+      if (normalizeRole(auth.role) === normalizeRole(Roles.KEPALA_LAB)) {
+        nextStatus = "DIPERIKSA";
+      } else if (normalizeRole(auth.role) === normalizeRole(Roles.WADEK)) {
+        nextStatus = "DISETUJUI";
+      } else if (normalizeRole(auth.role) === normalizeRole(Roles.DEKAN)) {
+        nextStatus = "DIPROSES";
+      }
+    }
+
+    // FIX: Update status dengan try-catch terpisah
+    // Jika gagal di sini, persetujuan tetap tersimpan tapi status tidak terupdate
+    try {
+      await prisma.pengajuanServer.update({
+        where: { id: pengajuanId },
+        data: { status: nextStatus as any },
+      });
+    } catch (updateError) {
+      console.error(
+        `Gagal update status pengajuan ke "${nextStatus}":`,
+        updateError
+      );
+      // FIX: Kembalikan pesan error yang spesifik agar mudah di-debug
+      return NextResponse.json(
+        {
+          message: `Persetujuan tersimpan, namun gagal update status pengajuan ke "${nextStatus}". Pastikan nilai status valid di schema Prisma.`,
+        },
+        { status: 500 }
+      );
+    }
+
+    // Audit Log — jangan biarkan kegagalan audit membatalkan seluruh proses
+    try {
+      await createAuditLog({
+        pengajuanId,
+        userId: auth.userId,
+        action: "PERSETUJUAN",
+        detail: `Role: ${auth.role} | Status: ${status} | Note: ${catatan || "-"}`,
+      });
+    } catch (auditError) {
+      console.error("Gagal membuat audit log:", auditError);
+      // Tidak return error — audit log bukan operasi kritis
+    }
 
     return NextResponse.json({
       message: "Persetujuan berhasil disimpan",
       data: newPersetujuan,
     });
   } catch (error) {
-    console.error("Error in Persetujuan POST:", error);
+    console.error("Error tidak terduga di Persetujuan POST:", error);
     return handleApiError(error);
   }
 }
@@ -141,7 +192,8 @@ export async function DELETE(request: Request) {
     const { searchParams } = new URL(request.url);
     const id = Number(searchParams.get("id"));
 
-    if (!id) return NextResponse.json({ message: "Invalid id." }, { status: 400 });
+    if (!id)
+      return NextResponse.json({ message: "Invalid id." }, { status: 400 });
 
     const deleted = await prisma.persetujuan.delete({ where: { id } });
 
